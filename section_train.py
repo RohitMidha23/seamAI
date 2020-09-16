@@ -66,7 +66,7 @@ def train(args):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Generate the train and validation sets for the model:
-    # split_train_val(args, per_val=args.per_val)
+    split_train_val(args, per_val=args.per_val)
 
     current_time = datetime.now().strftime('%b%d_%H%M%S')
     log_dir = os.path.join('runs', current_time +

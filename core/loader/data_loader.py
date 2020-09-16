@@ -193,6 +193,7 @@ class section_loader(data.Dataset):
                 file_list = tuple(open(path, 'r'))
                 file_list = [id_.rstrip() for id_ in file_list]
                 self.sections[split] = file_list
+                print(f"[INFO] Split {split} has {len(file_list)} samples")
         elif 'test' in split:
             # We are in test mode. Only read the given split. The other one might not 
             # be available. 

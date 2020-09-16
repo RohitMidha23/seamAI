@@ -176,7 +176,14 @@ def test(args):
     # confusion = score['confusion_matrix']
     # np.savetxt(pjoin(log_dir,'confusion.csv'), confusion, delimiter=" ")
     
-    np.savez_compressed('submission.npz', prediction = np.array(results))
+    sub = np.transpose(np.array(results), (1, 0, 3, 2))
+    print(sub.shape)
+    sub = sub[0]
+    sub = np.transpose(sub, (2, 0, 1))
+    sub = sub + 1
+    assert sorted(list(np.unique(sub))) == list(range(1,7)), "[ERR] labels wrong"
+
+    np.savez_compressed('submission.npz', prediction = sub)
     writer.close()
     return
 

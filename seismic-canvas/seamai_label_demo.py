@@ -2,21 +2,36 @@
 The program displays x-, y-, z- slices of a numpy array in 3D, allows user
 to interactively drag the slices, includes useful features such as colorbar
 and axis legend, and can output the figure to .png file with various resolution.
+python seamai_label_demo.py --filepath seamai_data/labels_train.npz
+python seamai_label_demo.py --filepath seamai_data/submission.npz
+
 """
+import argparse
 
 import numpy as np
 from vispy.color import get_colormap, Colormap, Color
 
 from seismic_canvas import (SeismicCanvas, volume_slices, XYZAxis, Colorbar)
 
+# Create the parser
+my_parser = argparse.ArgumentParser(description='file path to viz')
+
+# Add the arguments
+my_parser.add_argument('--filepath',
+                      # metavar='path',
+                       type=str,
+                       help='the path to file')
 
 if __name__ == '__main__':
 
-
+  args = my_parser.parse_args()
  #volume = np.load('./data_train.npz')["data"] 
-  volume = np.load('seamai_data/labels_train.npz')["labels"] 
+  if args.filepath ==  "seamai_data/labels_train.npz":
+      volume = np.load(args.filepath)["labels"] 
+  else:
+      volume = np.load(args.filepath)["prediction"].astype(np.int8) 
   volume = volume.transpose(1,2,0)
-  print(volume.shape) #(1006, 782, 590) z,x,y ==> (782,590,1006)
+  print(volume.shape,volume.dtype) #(1006, 782, 590) z,x,y ==> (782,590,1006) ||
   axis_scales = (0.7, 0.5, 1) # anisotropic axes (stretch z-axis)
 
   # Colormaps.
@@ -25,7 +40,7 @@ if __name__ == '__main__':
   visual_nodes = volume_slices(volume,
     cmaps=cmap, clims=clim,
     # x_pos=32, y_pos=25, z_pos=93)
-    x_pos=370, y_pos=250, z_pos=120)
+    x_pos=0, y_pos=0, z_pos=0)
   xyz_axis = XYZAxis()
   colorbar = Colorbar(cmap=cmap, clim=clim, label_str='Labels',
                       label_size=8, tick_size=6)

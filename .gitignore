@@ -123,3 +123,7 @@ runs/
 .~lock.weak_results.ods#
 
 *.npz
+__pycache__
+*.pyc
+
+*.dat

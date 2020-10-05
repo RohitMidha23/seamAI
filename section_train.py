@@ -33,7 +33,8 @@ def split_train_val(args, per_val=0.1):
     print("[INFO] Splitting...")
     labels = np.load(pjoin('data', 'train', 'train_labels.npz'), allow_pickle=True, mmap_mode='r')
     labels = labels["labels"]
-    labels = np.transpose(labels, (1,2,0))
+    # labels = np.transpose(labels, (1,2,0)) # by x
+    labels = np.transpose(labels, (2, 1, 0)) # by y
     labels = labels - 1
     i_list = list(range(labels.shape[0]))
     i_list = ['i_'+str(inline) for inline in i_list]

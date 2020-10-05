@@ -170,13 +170,16 @@ class section_loader(data.Dataset):
             labels = np.load(pjoin('data','train','train_labels.npz'), mmap_mode="r", allow_pickle=True)
             labels = labels["labels"]
             labels = labels - 1
-            self.seismic = np.transpose(seismic, (1,2,0))
-            self.labels = np.transpose(labels, (1,2,0))
+            # self.seismic = np.transpose(seismic, (1, 2, 0)) # train by x
+            # self.labels = np.transpose(labels, (1, 2, 0)) # train by x
+            self.seismic = np.transpose(seismic, (2, 1,0)) # train by y
+            self.labels = np.transpose(labels, (2, 1, 0)) # train by y
         elif 'test1' in self.split:
             print("[INFO] Reading Test File...")
             data_test = np.load('data/data_test.npz', allow_pickle=True, mmap_mode='r')
             data_test = data_test['data']
-            self.seismic = np.transpose(data_test, (1, 2, 0))
+            # self.seismic = np.transpose(data_test, (1, 2, 0)) # test x
+            self.seismic = np.transpose(data_test, (2, 1, 0)) # test y
             self.labels = np.zeros(self.seismic.shape) # test set not known
         elif 'test2' in self.split:
             self.seismic = np.load(pjoin('data','test_once','test2_seismic.npy'))

@@ -33,7 +33,8 @@ def test(args):
         data_test = np.load('data/data_test.npz', allow_pickle=True, mmap_mode='r')
         data_test = data_test['data']
         # print(data_test.shape)
-        data_test = np.transpose(data_test, (1, 2, 0))
+        # data_test = np.transpose(data_test, (1, 2, 0)) # by x 
+        data_test = np.transpose(data_test, (2, 1, 0)) # by y
         # print(data_test.shape)
         irange, xrange, depth = data_test.shape
 
@@ -131,59 +132,16 @@ def test(args):
                         writer.add_image(f'test_classes/_{class_names[channel]}', tb_channel, i)
         # get scores and save in writer()
         # score, class_iou = running_metrics_split.get_scores()
-
-        # Add split results to TB:
-    #     writer.add_text(f'test__{split}/',
-    #                     f'Pixel Acc: {score["Pixel Acc: "]:.3f}', 0)
-    #     for cdx, class_name in enumerate(class_names):
-    #         writer.add_text(
-    #             f'test__{split}/', f'  {class_name}_accuracy {score["Class Accuracy: "][cdx]:.3f}', 0)
-
-    #     writer.add_text(
-    #         f'test__{split}/', f'Mean Class Acc: {score["Mean Class Acc: "]:.3f}', 0)
-    #     writer.add_text(
-    #         f'test__{split}/', f'Freq Weighted IoU: {score["Freq Weighted IoU: "]:.3f}', 0)
-    #     writer.add_text(f'test__{split}/',
-    #                     f'Mean IoU: {score["Mean IoU: "]:0.3f}', 0)
-
-    #     running_metrics_split.reset()
-
-    # # FINAL TEST RESULTS:
-    # score, class_iou = running_metrics_overall.get_scores()
-
-    # # Add split results to TB:
-    # writer.add_text('test_final', f'Pixel Acc: {score["Pixel Acc: "]:.3f}', 0)
-    # for cdx, class_name in enumerate(class_names):
-    #     writer.add_text(
-    #         'test_final', f'  {class_name}_accuracy {score["Class Accuracy: "][cdx]:.3f}', 0)
-
-    # writer.add_text(
-    #     'test_final', f'Mean Class Acc: {score["Mean Class Acc: "]:.3f}', 0)
-    # writer.add_text(
-    #     'test_final', f'Freq Weighted IoU: {score["Freq Weighted IoU: "]:.3f}', 0)
-    # writer.add_text('test_final', f'Mean IoU: {score["Mean IoU: "]:0.3f}', 0)
-
-    # print('--------------- FINAL RESULTS -----------------')
-    # print(f'Pixel Acc: {score["Pixel Acc: "]:.3f}')
-    # for cdx, class_name in enumerate(class_names):
-    #     print(
-    #         f'     {class_name}_accuracy {score["Class Accuracy: "][cdx]:.3f}')
-    # print(f'Mean Class Acc: {score["Mean Class Acc: "]:.3f}')
-    # print(f'Freq Weighted IoU: {score["Freq Weighted IoU: "]:.3f}')
-    # print(f'Mean IoU: {score["Mean IoU: "]:0.3f}')
-
-    # # Save confusion matrix: 
-    # confusion = score['confusion_matrix']
-    # np.savetxt(pjoin(log_dir,'confusion.csv'), confusion, delimiter=" ")
     
     sub = np.transpose(np.array(results), (1, 0, 3, 2))
     print(sub.shape)
     sub = sub[0]
-    sub = np.transpose(sub, (2, 0, 1))
+    # sub = np.transpose(sub, (2, 0, 1)) # for x
+    sub = np.transpose(sub, (2, 1, 0)) # for y
     sub = sub + 1
     assert sorted(list(np.unique(sub))) == list(range(1,7)), "[ERR] labels wrong"
 
-    np.savez_compressed('submission.npz', prediction = sub)
+    np.savez_compressed('submission.npz', prediction = results)
     writer.close()
     return
 

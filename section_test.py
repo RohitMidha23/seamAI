@@ -141,7 +141,7 @@ def test(args):
     sub = sub + 1
     assert sorted(list(np.unique(sub))) == list(range(1,7)), "[ERR] labels wrong"
 
-    np.savez_compressed('submission.npz', prediction = results)
+    np.savez_compressed('submission.npz', prediction = sub)
     writer.close()
     return
 

@@ -36,12 +36,12 @@ if __name__ == '__main__':
   axis_scales = (0.7, 0.5, 1) # anisotropic axes (stretch z-axis)
 
   # Colormaps.
-  cmap='grays'; clim=(-1000, 1500)   #-5195.5234 5151.7188
+  cmap='seismic'; clim=(-1500, 1500)   #-5195.5234 5151.7188
   # Get visual nodes ready.
   visual_nodes = volume_slices(volume,
     cmaps=cmap, clims=clim,
     # x_pos=32, y_pos=25, z_pos=93)
-    x_pos=370, y_pos=250, z_pos=120)
+    x_pos=volume.shape[0]-1, y_pos=volume.shape[1]-1, z_pos=0) #(782, 590, 1006)
   xyz_axis = XYZAxis()
   colorbar = Colorbar(cmap=cmap, clim=clim, label_str='Data',
                       label_size=8, tick_size=6)

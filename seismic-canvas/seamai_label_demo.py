@@ -40,7 +40,7 @@ if __name__ == '__main__':
   visual_nodes = volume_slices(volume,
     cmaps=cmap, clims=clim,
     # x_pos=32, y_pos=25, z_pos=93)
-    x_pos=0, y_pos=0, z_pos=0)
+    x_pos=volume.shape[0]-1, y_pos=volume.shape[1]-1, z_pos=0)
   xyz_axis = XYZAxis()
   colorbar = Colorbar(cmap=cmap, clim=clim, label_str='Labels',
                       label_size=8, tick_size=6)

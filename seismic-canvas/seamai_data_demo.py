@@ -11,6 +11,8 @@ import argparse
 
 import numpy as np
 from vispy.color import get_colormap, Colormap, Color
+from vispy.gloo.util import _screenshot
+from vispy import scene, io
 
 from seismic_canvas import (SeismicCanvas, volume_slices, XYZAxis, Colorbar)
 # Create the parser
@@ -18,17 +20,19 @@ my_parser = argparse.ArgumentParser(description='file path to viz')
 
 # Add the arguments
 my_parser.add_argument('--filepath',
-                      # metavar='path',
                        type=str,
                        help='the path to file')
 
+my_parser.add_argument('--nbmode',
+                        default=0,
+                       type=str,
+                       help='whether notebook mode')
 
 if __name__ == '__main__':
 
-  
   # Execute the parse_args() method
   args = my_parser.parse_args()
- #volume = np.load('./data_train.npz')["data"] 
+  #volume = np.load('./data_train.npz')["data"] 
   volume = np.load(args.filepath)["data"] #
   volume = volume.transpose(1,2,0)
   #print(volume.min(),volume.max())
@@ -64,5 +68,9 @@ if __name__ == '__main__':
                          azimuth=45,
                          zoom_factor=1.2 # >1: zoom in; <1: zoom out
                          )
-  canvas.measure_fps()
-  canvas.app.run()
+  if args.nbmode == 0:
+      canvas.measure_fps()
+      canvas.app.run()
+  else:
+    screenshot = _screenshot()
+    io.write_png("data_example"+ '.png', screenshot)

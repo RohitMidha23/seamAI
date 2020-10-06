@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
   args = my_parser.parse_args()
  #volume = np.load('./data_train.npz')["data"] 
-  if args.filepath ==  "seamai_data/labels_train.npz":
+  if "labels" in args.filepath:
       volume = np.load(args.filepath)["labels"] 
   else:
       volume = np.load(args.filepath)["prediction"].astype(np.int8) 
